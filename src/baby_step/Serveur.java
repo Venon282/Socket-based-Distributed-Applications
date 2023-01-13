@@ -13,26 +13,30 @@ public class Serveur {
 		while(true) {
 			// wait for a connection request
 			Socket soc = listenSoc.accept();
-			
-			//Reading
-			InputStream is = soc.getInputStream();
-			DataInputStream dis = new DataInputStream(is);
-			
-			//Writing
-			OutputStream os = soc.getOutputStream();
-			DataOutputStream dos = new DataOutputStream(os);
-			
-			//Read the name of the client
-			int length = dis.readInt();
-			byte[] b = new byte[length];
-			dis.readFully(b);
-			String name = new String(b,"UTF-8");	
-			
-			//Send answer
-			String answer = "Hello "+name;
-			b=answer.getBytes("UTF-8");
-			dos.writeInt(b.length);
-			dos.write(b);
+			if (soc != null) Process(soc);
 		}
+	}
+	
+	static boolean Process(Socket soc) throws IOException {
+		//Reading
+		InputStream is = soc.getInputStream();
+		DataInputStream dis = new DataInputStream(is);
+		
+		//Writing
+		OutputStream os = soc.getOutputStream();
+		DataOutputStream dos = new DataOutputStream(os);
+		
+		//Read the name of the client
+		int length = dis.readInt();
+		byte[] b = new byte[length];
+		dis.readFully(b);
+		String name = new String(b,"UTF-8");	
+		
+		//Send answer
+		String answer = "Hello "+name;
+		b=answer.getBytes("UTF-8");
+		dos.writeInt(b.length);
+		dos.write(b);
+		return true;
 	}
 }
