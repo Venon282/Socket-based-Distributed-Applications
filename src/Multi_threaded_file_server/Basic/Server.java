@@ -1,4 +1,4 @@
-package Multi_threaded_file_server;
+package Multi_threaded_file_server.Basic;
 
 import java.io.BufferedOutputStream;
 import java.io.DataInputStream;
@@ -41,40 +41,7 @@ public class Server {
 			if (soc != null) new Worker(soc);
 		}
 	}
-	
-	/*static boolean Process(Socket soc) throws IOException {
-		//Reading
-		InputStream is = soc.getInputStream();
-		DataInputStream dis = new DataInputStream(is);
-		
-		//Writing
-		OutputStream os = soc.getOutputStream();
-		DataOutputStream dos = new DataOutputStream(os);
-		
-		String file_link = dis.readUTF();
-		
-		File file = new File(file_link);
-		
-		if(!file.exists()) {
-			dos.writeUTF("File not found");
-			return false;
-		}
-					
-		dos.writeUTF(file.getName());
-		FileInputStream fis = new FileInputStream(file);
-		byte[] b = new byte[(int)file.length()];
-		dos.writeInt(b.length);
-		dos.flush();
-		fis.read(b);
-		dos.write(b);
-		dos.flush();
-		
-		dos.close();
-		os.close();
-		soc.close();
-		return true;
-		
-	}*/
+
 	
 	public static void main(String[] args) throws IOException {
 		new Server(4320);

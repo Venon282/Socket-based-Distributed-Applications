@@ -1,4 +1,4 @@
-package Multi_threaded_file_server;
+package Multi_threaded_file_server.Pool_Based;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
@@ -24,7 +24,9 @@ public class Client {
 		this.serverPort=serverPort;
 		this.path_file=path_file;
 		this.name_file=name_file;
+		System.out.println("Start");
 		Main();
+		System.out.println("End");
 	}
 	
 	void Main() throws IOException {

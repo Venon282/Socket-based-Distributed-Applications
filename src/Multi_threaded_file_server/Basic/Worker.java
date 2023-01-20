@@ -1,4 +1,4 @@
-package Multi_threaded_file_server;
+package Multi_threaded_file_server.Basic;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
@@ -51,9 +51,8 @@ public class Worker extends Thread{
 		dos.writeInt(b.length);
 		dos.flush();
 		FileInputStream fis = new FileInputStream(file);
-		synchronized(this){
-			fis.read(b);
-		}
+		fis.read(b);
+		
 		fis.close();
 		dos.write(b);
 		dos.flush();
