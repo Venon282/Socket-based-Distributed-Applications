@@ -1,8 +1,6 @@
 package v3.Multi_threaded_file_server.Pool_Based;
 
-import java.io.IOException;
 import java.net.Socket;
-import java.util.Properties;
 import java.util.concurrent.Semaphore;
 
 

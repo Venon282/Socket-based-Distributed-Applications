@@ -31,12 +31,6 @@ public class Worker extends Thread{
 	}
 	
 	void Process(Socket soc) throws IOException {
-		try {
-			sleep(5000);
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
 		//Reading
 		InputStream is = soc.getInputStream();
 		DataInputStream dis = new DataInputStream(is);
@@ -55,33 +49,23 @@ public class Worker extends Thread{
 			return;
 		}
 		
-		
+		//Name of the file
 		dos.writeUTF(file.getName());
 		
+		//Send necessary information
 		long size = file.length();		//file size
 		byte[] b = new byte[read_len];	//buffer of data
+		dos.writeLong(size);
+		dos.writeInt(this.read_len);	//Send the size of sending
+		dos.flush();
 		
+		//Send file information
 		FileInputStream fis = new FileInputStream(file);
-		long index=0;
-		while(index<size) {
-			long dif=size-index;
-			if(dif>=this.read_len) {
-				dos.writeInt(this.read_len);	//Send the size of sending
-				dos.flush();
-				fis.read(b,(int)index,read_len);
-				index+=this.read_len
-						//TODO
-						//Finir l'envoie des 512 + la reception
-			}else {
-				dos.writeInt(dif);	//Send the size of sending
-				dos.flush();
-				fis.read(b,index,dif);
-				index+=dif;
-			}
+		while(fis.read(b)>0) {
 			dos.write(b);
-			dos.flush();
 		}
-		dos.writeUTF("EOF");
+		
+		//close all
 		fis.close();
 		dos.close();
 		os.close();

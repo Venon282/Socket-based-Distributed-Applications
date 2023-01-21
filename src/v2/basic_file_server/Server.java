@@ -1,17 +1,14 @@
 package v2.basic_file_server;
 
-import java.io.BufferedOutputStream;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.nio.file.Files;
 
 public class Server {
 	
@@ -30,14 +27,24 @@ public class Server {
 		Main();
 	}
 	
-	public void Main() throws IOException {
-		ServerSocket listenSoc = new ServerSocket(port, backlog);
-		
-		while(true) {
-			// wait for a connection request
-			Socket soc = listenSoc.accept();
-			if (soc != null) Process(soc);
+	public void Main() {
+		ServerSocket listenSoc = null;
+		try {
+			listenSoc = new ServerSocket(port, backlog);
+			while(true) {
+				// wait for a connection request
+				Socket soc = listenSoc.accept();
+				if (soc != null) Process(soc);
+			}
+		} catch (IOException e) {
+			try {
+				listenSoc.close();
+			} catch (IOException e1) {
+				e1.printStackTrace();
+			}
 		}
+		
+		
 	}
 	
 	static boolean Process(Socket soc) throws IOException {
@@ -67,6 +74,7 @@ public class Server {
 		dos.write(b);
 		dos.flush();
 		
+		fis.close();
 		dos.close();
 		os.close();
 		soc.close();

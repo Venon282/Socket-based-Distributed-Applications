@@ -32,6 +32,7 @@ public class Client {
 		name = new String(b);		
 		
 		System.out.println(name);
+		soc.close();
 	}
 	
 	

@@ -3,9 +3,7 @@ package v4.Considering_large_files;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileOutputStream;
-import java.io.FilterInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -49,13 +47,13 @@ public class Client {
 		
 		//Error
 		if(!answer.equals(name_file)) {
-			System.out.println(answer);
 			dos.close();
 			os.close();
 			soc.close();
 			return;
 		}
-				
+		
+		//Name define
 		File file = new File(name_file);
 		if(!file.exists()) {
 			file.createNewFile();
@@ -67,21 +65,25 @@ public class Client {
 			}while(file.exists());
 		}
 		
+		//Get informations
 		FileOutputStream fos = new FileOutputStream(file);
+		long size = dis.readLong();
 		int length = dis.readInt();
-		byte[] b = dis.readNBytes(length);
-		boolean eof=false;
-		do {
-			answer = dis.readUTF();
-			if(answer.equals("EOF"))
-				eof=true;
-			else {
-				fos.write(b);
-				fos.flush();
-			}
-		}while(!eof);
+		byte[] b = new byte[length]; //dis.readNBytes(length);
 		
+		//Infill the file
+		int how=0;	//Number of bytes read
+		while(size>0) {
+			how=dis.read(b);
+			
+			if(size<length) {					//If last reading
+				fos.write(b, 0, (int) size);
+				break;
+			}else fos.write(b);
+			size-=how;
+		}
 		
+		//Close all
 		fos.close();
 		dos.close();
 		os.close();
