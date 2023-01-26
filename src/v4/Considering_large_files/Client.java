@@ -59,11 +59,9 @@ public class Client {
 		if(!file.exists()) {
 			file.createNewFile();
 		}else {
-			int i=1;
-			do {
+			for(int i=0;file.exists();i++) {
 				file = new File(this.path_file+this.name_file+"("+i+")");
-				i++;
-			}while(file.exists());
+			}
 		}
 		
 		//Get informations
