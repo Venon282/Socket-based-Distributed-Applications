@@ -12,10 +12,12 @@ import java.net.Socket;
 public class Worker extends Thread{
 	ProdConsBuffer clientsBuffer;
 	int read_len;
+	String racine;
 	
-	Worker(ProdConsBuffer clientsBuffer){
+	Worker(ProdConsBuffer clientsBuffer,String racine){
 		this.clientsBuffer=clientsBuffer;
 		read_len=512;
+		this.racine=racine;
 		this.start();
 	}
 	
@@ -40,10 +42,10 @@ public class Worker extends Thread{
 		DataOutputStream dos = new DataOutputStream(os);
 		
 		//Get the link file
-		String file_link = dis.readUTF();
+		String name = dis.readUTF();
 		
 		//Get the file
-		File file = new File(file_link);
+		File file = new File(this.racine + name);
 		if(!file.exists()) {
 			dos.writeUTF("File not found");
 			return;

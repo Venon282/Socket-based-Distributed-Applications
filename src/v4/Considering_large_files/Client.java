@@ -40,13 +40,14 @@ public class Client {
 		DataInputStream dis = new DataInputStream(is);
 				
 		//Send the name of the file
-		dos.writeUTF(path_file+name_file);
+		dos.writeUTF(name_file);
 				
 		//Receive answer
 		String answer = dis.readUTF();
 		
 		//Error
 		if(!answer.equals(name_file)) {
+			System.out.println(answer);
 			dos.close();
 			os.close();
 			soc.close();
@@ -54,13 +55,13 @@ public class Client {
 		}
 		
 		//Name define
-		File file = new File(name_file);
+		File file = new File(this.path_file+this.name_file);
 		if(!file.exists()) {
 			file.createNewFile();
 		}else {
 			int i=1;
 			do {
-				file = new File(name_file+"("+i+")");
+				file = new File(this.path_file+this.name_file+"("+i+")");
 				i++;
 			}while(file.exists());
 		}
@@ -91,6 +92,6 @@ public class Client {
 	}
 	
 	public static void main(String[] args) throws UnknownHostException, IOException {
-		new Client("127.0.0.1",4320,"src/","test.txt");
+		new Client("127.0.0.1",4320,"src/download_document/","test.txt");
 	}
 }
